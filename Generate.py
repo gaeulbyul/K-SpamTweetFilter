@@ -34,18 +34,6 @@ header = f"""[Adblock Plus 2.0]
 smallquote = "'"
 largequote = "\""
 
-def preprocess(text):
-	# 정규식
-	if text.startswith("/") and text.endswith("/"):
-		return text
-	# 따옴표
-	elif largequote in text and smallquote in text:
-		return largequote + text.replace(largequote, "\\\"") + largequote
-	elif largequote in text:
-		return smallquote + text + smallquote
-	else:
-		return largequote + text + largequote
-
 def main():
 	print("Reading from SPAM_WORDS.txt ...")
 	with open("SPAM_WORDS.txt", "r", encoding="UTF8") as inputfile:
@@ -62,7 +50,6 @@ def main():
 			if line.startswith("(") and line.endswith(")"):
 				continue
 			count += 1
-			line = preprocess(line)
 			filterfile.write(block_tweet(line) + "\n")
 			filterfile.write(block_usercell(line) + "\n")
 			filterfile.write(block_trend(line) + "\n")
